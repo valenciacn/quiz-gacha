@@ -1,6 +1,14 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
 const { env, port } = require('./core/config');
 const logger = require('./core/logger')('app');
 const server = require('./core/server');
+
+// Koneksi ke MongoDB Atlas
+mongoose
+  .connect(process.env.DB_CONNECTION)
+  .then(() => logger.info('Connected to MongoDB Atlas'))
+  .catch((err) => logger.error(err, 'MongoDB connection error'));
 
 const app = server.listen(port, (err) => {
   if (err) {
@@ -13,12 +21,6 @@ const app = server.listen(port, (err) => {
 
 process.on('uncaughtException', (err) => {
   logger.fatal(err, 'Uncaught exception.');
-
-  // Shutdown the server gracefully
   app.close(() => process.exit(1));
-
-  // If a graceful shutdown is not achieved after 1 second,
-  // shut down the process completely
   setTimeout(() => process.abort(), 1000).unref();
-  process.exit(1);
 });

@@ -1,18 +1,51 @@
-# Backend Programming Template (2025)
+# Kuis Backend Programming 1 - Sistem Gacha Undian
 
-## Development Setup
+**Nama:** Valencia  
+**Database:** MongoDB Atlas  
+**Teknologi:** Node.js, Express, Mongoose
 
-1. Fork and clone this repository to your local computer.
-2. Open the project using VS Code.
-3. Install the recommended VS Code extensions: `ESLint` and `Prettier`.
-4. Copy and rename `.env.example` to `.env`. Open `.env` and change the database connection string.
-5. Run `npm install` to install the project dependencies.
-6. Run `npm run dev` to start the dev server.
-7. Test the endpoints in the API client app.
+Project ini adalah tugas Kuis untuk mata kuliah Back-End Programming yang mengimplementasikan sistem undian gacha dengan batasan kuota dan limit harian.
 
-## Add New API Endpoints
+## Fitur Utama
 
-1. Create a new database schema in `./src/models`.
-2. Create a new folder in `./src/api/components` (if needed). Remember to separate your codes to repositories, services, controllers, and routes.
-3. Add the new route in `./src/api/routes.js`.
-4. Test your new endpoints in the API client app.
+**Limit Harian:** Setiap user hanya bisa melakukan gacha maksimal 5 kali dalam 24 jam.
+**Kontrol Kuota:** Sistem memvalidasi sisa kuota hadiah sebelum menentukan pemenang agar tidak melebihi batas.
+**Logging Database:** Setiap tarikan gacha (menang atau kalah) tercatat secara permanen di MongoDB Atlas.
+**Sensor Nama:** Daftar pemenang ditampilkan dengan nama yang disamarkan secara acak untuk privasi.
+
+## Endpoint API
+
+### 1. Main Gacha (Utama)
+
+Digunakan untuk melakukan tarikan undian.
+
+- **URL:** `/api/gacha`
+- **Method:** `POST`
+- **Body (JSON):**
+  ```json
+  {
+    "userId": "Valencia123"
+  }
+  ```
+
+### 2. Histori Gacha User (Bonus)
+
+Melihat riwayat semua tarikan gacha yang pernah dilakukan oleh satu user tertentu.
+
+- **URL:** `/api/gacha/history/:userId`
+- **Method:** `GET`
+- **Contoh:** `/api/gacha/history/Valencia123`
+
+### 3. Daftar Hadiah & Sisa Kuota (Bonus)
+
+Mengecek daftar hadiah yang tersedia beserta sisa kuotanya saat ini.
+
+- **URL:** `/api/gacha/prizes`
+- **Method:** `GET`
+
+### 4. Daftar Pemenang Terkini (Bonus)
+
+Menampilkan daftar user yang berhasil memenangkan hadiah dengan nama yang sudah disamarkan.
+
+- **URL:** `/api/gacha/winners`
+- **Method:** `GET`
